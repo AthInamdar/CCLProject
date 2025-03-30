@@ -1,0 +1,151 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SonarQube Dashboard</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="{% static 'dashboard/style.css' %}" />
+  </head>
+  <body>
+    <div class="container-fluid d-flex">
+      <!-- Main Dashboard -->
+      <div class="dashboard-section flex-grow-1 p-4">
+        <h2 class="text-center">SonarQube Security Analysis Dashboard</h2>
+
+        <div class="row mt-4">
+          <div class="col-12">
+            <h4 class="text-center">Issue Severity Distribution</h4>
+            <canvas id="issueSeverityChart" class="chart-small"></canvas>
+          </div>
+        </div>
+
+        <div class="row mt-4">
+          <div class="col-12">
+            <h4 class="text-center">Issue Type Breakdown</h4>
+            <canvas
+              id="issueTypeChart"
+              style="max-width: 500px; max-height: 500px; margin: auto"
+              class="chart-small"
+            ></canvas>
+          </div>
+        </div>
+
+        <div class="row mt-4">
+          <div class="col-12">
+            <h4 class="text-center">Issues Over Time</h4>
+            <canvas
+              id="issuesOverTimeChart"
+              style="max-width: 500px; max-height: 500px; margin: auto"
+              class="chart-small"
+            ></canvas>
+          </div>
+        </div>
+
+        <div class="row mt-4">
+          <div class="col-12">
+            <h4 class="text-center">Technical Debt</h4>
+            <canvas id="technicalDebtChart" class="chart-small"></canvas>
+          </div>
+        </div>
+
+        <div class="row mt-4">
+          <div class="col-12">
+            <h4 class="text-center">Security Gauge</h4>
+            <canvas
+              id="securityGauge"
+              style="max-width: 500px; max-height: 500px; margin: auto"
+            ></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chatbot Section (Fixed) -->
+      <div class="chatbot-section">
+        <div id="chatbot-container">
+          <div id="chatbot-header">Gemini Chatbot</div>
+          <div id="chatbot-body"></div>
+          <div id="chatbot-footer">
+            <input
+              type="text"
+              id="chatbot-input"
+              placeholder="Ask a question..."
+            />
+            <button id="chatbot-send">Send</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const issueSeverityChart = new Chart(
+        document.getElementById("issueSeverityChart"),
+        {
+          type: "bar",
+          data: {
+            labels: ["BLOCKER", "CRITICAL", "MAJOR", "MINOR"],
+            datasets: [
+              {
+                label: "Issue Severity",
+                data: [
+                  {{ high_severity_count }},
+                  {{ critical_count }},
+                  {{ major_count }},
+                  {{ minor_count }}
+                ],
+                backgroundColor: ["red", "orange", "yellow", "green"]
+              }
+            ]
+          }
+        }
+      );
+
+      const issueTypeChart = new Chart(
+        document.getElementById("issueTypeChart"),
+        {
+          type: "pie",
+          data: {
+            labels: ["BUG", "VULNERABILITY", "CODE_SMELL"],
+            datasets: [
+              {
+                data: [
+                  {{ bug_count }},
+                  {{ vulnerability_count }},
+                  {{ code_smell_count }}
+                ],
+                backgroundColor: ["blue", "purple", "gray"]
+              }
+            ]
+          }
+        }
+      );
+
+      const securityGauge = new Chart(
+        document.getElementById("securityGauge"),
+        {
+          type: "doughnut",
+          data: {
+            labels: ["Secure", "At Risk"],
+            datasets: [
+              {
+                data: [{{ security_percentage }}, 100 - {{ security_percentage }}],
+                backgroundColor: ["green", "red"]
+              }
+            ]
+          },
+          options: {
+            cutout: "70%",
+            plugins: { legend: { display: false } }
+          }
+        }
+      );
+    </script>
+
+    <script src="{% static 'dashboard/chatbot.js' %}"></script>
+  </body>
+</html>

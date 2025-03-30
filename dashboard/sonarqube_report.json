@@ -1,0 +1,470 @@
+{
+    "total": 4,
+    "p": 1,
+    "ps": 100,
+    "paging": {
+        "pageIndex": 1,
+        "pageSize": 100,
+        "total": 4
+    },
+    "effortTotal": 120,
+    "debtTotal": 120,
+    "issues": [
+        {
+            "key": "AZUJmPCs6LPeHtyON0_G",
+            "rule": "pythonsecurity:S3649",
+            "severity": "BLOCKER",
+            "component": "neelkanth-khithani_security-scanning-pipeline:app.py",
+            "project": "neelkanth-khithani_security-scanning-pipeline",
+            "line": 28,
+            "hash": "fa099130abcb680329cc1d19fed5d70e",
+            "textRange": {
+                "startLine": 28,
+                "endLine": 28,
+                "startOffset": 8,
+                "endOffset": 29
+            },
+            "flows": [
+                {
+                    "locations": [
+                        {
+                            "component": "neelkanth-khithani_security-scanning-pipeline:app.py",
+                            "textRange": {
+                                "startLine": 28,
+                                "endLine": 28,
+                                "startOffset": 8,
+                                "endOffset": 29
+                            },
+                            "msg": "Sink: this invocation is not safe; a malicious value can be used as argument"
+                        },
+                        {
+                            "component": "neelkanth-khithani_security-scanning-pipeline:app.py",
+                            "textRange": {
+                                "startLine": 27,
+                                "endLine": 27,
+                                "startOffset": 8,
+                                "endOffset": 92
+                            },
+                            "msg": "A malicious value can be assigned to variable ‘query’"
+                        },
+                        {
+                            "component": "neelkanth-khithani_security-scanning-pipeline:app.py",
+                            "textRange": {
+                                "startLine": 27,
+                                "endLine": 27,
+                                "startOffset": 16,
+                                "endOffset": 92
+                            },
+                            "msg": "This concatenation can propagate malicious content to the newly created string"
+                        },
+                        {
+                            "component": "neelkanth-khithani_security-scanning-pipeline:app.py",
+                            "textRange": {
+                                "startLine": 27,
+                                "endLine": 27,
+                                "startOffset": 55,
+                                "endOffset": 63
+                            },
+                            "msg": "The malicious content is concatenated into the string"
+                        },
+                        {
+                            "component": "neelkanth-khithani_security-scanning-pipeline:app.py",
+                            "textRange": {
+                                "startLine": 23,
+                                "endLine": 23,
+                                "startOffset": 8,
+                                "endOffset": 47
+                            },
+                            "msg": "A malicious value can be assigned to variable ‘username’"
+                        },
+                        {
+                            "component": "neelkanth-khithani_security-scanning-pipeline:app.py",
+                            "textRange": {
+                                "startLine": 23,
+                                "endLine": 23,
+                                "startOffset": 19,
+                                "endOffset": 47
+                            },
+                            "msg": "Source: a user can craft an HTTP request with malicious content"
+                        }
+                    ]
+                },
+                {
+                    "locations": [
+                        {
+                            "component": "neelkanth-khithani_security-scanning-pipeline:app.py",
+                            "textRange": {
+                                "startLine": 28,
+                                "endLine": 28,
+                                "startOffset": 8,
+                                "endOffset": 29
+                            },
+                            "msg": "Sink: this invocation is not safe; a malicious value can be used as argument"
+                        },
+                        {
+                            "component": "neelkanth-khithani_security-scanning-pipeline:app.py",
+                            "textRange": {
+                                "startLine": 27,
+                                "endLine": 27,
+                                "startOffset": 8,
+                                "endOffset": 92
+                            },
+                            "msg": "A malicious value can be assigned to variable ‘query’"
+                        },
+                        {
+                            "component": "neelkanth-khithani_security-scanning-pipeline:app.py",
+                            "textRange": {
+                                "startLine": 27,
+                                "endLine": 27,
+                                "startOffset": 16,
+                                "endOffset": 92
+                            },
+                            "msg": "This concatenation can propagate malicious content to the newly created string"
+                        },
+                        {
+                            "component": "neelkanth-khithani_security-scanning-pipeline:app.py",
+                            "textRange": {
+                                "startLine": 27,
+                                "endLine": 27,
+                                "startOffset": 81,
+                                "endOffset": 89
+                            },
+                            "msg": "The malicious content is concatenated into the string"
+                        },
+                        {
+                            "component": "neelkanth-khithani_security-scanning-pipeline:app.py",
+                            "textRange": {
+                                "startLine": 24,
+                                "endLine": 24,
+                                "startOffset": 8,
+                                "endOffset": 47
+                            },
+                            "msg": "A malicious value can be assigned to variable ‘password’"
+                        },
+                        {
+                            "component": "neelkanth-khithani_security-scanning-pipeline:app.py",
+                            "textRange": {
+                                "startLine": 24,
+                                "endLine": 24,
+                                "startOffset": 19,
+                                "endOffset": 47
+                            },
+                            "msg": "Source: a user can craft an HTTP request with malicious content"
+                        }
+                    ]
+                }
+            ],
+            "status": "OPEN",
+            "message": "Change this code to not construct SQL queries directly from user-controlled data.",
+            "effort": "30min",
+            "debt": "30min",
+            "author": "",
+            "tags": [
+                "cwe",
+                "sql"
+            ],
+            "creationDate": "2025-02-15T13:32:24+0100",
+            "updateDate": "2025-02-15T13:32:24+0100",
+            "type": "VULNERABILITY",
+            "organization": "security-scanning-pipeline",
+            "cleanCodeAttribute": "COMPLETE",
+            "cleanCodeAttributeCategory": "INTENTIONAL",
+            "impacts": [
+                {
+                    "softwareQuality": "SECURITY",
+                    "severity": "HIGH"
+                }
+            ],
+            "issueStatus": "OPEN",
+            "projectName": "Security Scanning Pipeline"
+        },
+        {
+            "key": "AZUJmPCs6LPeHtyON0_J",
+            "rule": "pythonsecurity:S5496",
+            "severity": "BLOCKER",
+            "component": "neelkanth-khithani_security-scanning-pipeline:app.py",
+            "project": "neelkanth-khithani_security-scanning-pipeline",
+            "line": 49,
+            "hash": "0f3caaa3c7352b28c71cf47ab302cfec",
+            "textRange": {
+                "startLine": 49,
+                "endLine": 49,
+                "startOffset": 11,
+                "endOffset": 67
+            },
+            "flows": [
+                {
+                    "locations": [
+                        {
+                            "component": "neelkanth-khithani_security-scanning-pipeline:app.py",
+                            "textRange": {
+                                "startLine": 49,
+                                "endLine": 49,
+                                "startOffset": 11,
+                                "endOffset": 67
+                            },
+                            "msg": "Sink: this invocation is not safe; a malicious value can be used as argument"
+                        },
+                        {
+                            "component": "neelkanth-khithani_security-scanning-pipeline:app.py",
+                            "textRange": {
+                                "startLine": 49,
+                                "endLine": 49,
+                                "startOffset": 34,
+                                "endOffset": 66
+                            },
+                            "msg": "This concatenation can propagate malicious content to the newly created string"
+                        },
+                        {
+                            "component": "neelkanth-khithani_security-scanning-pipeline:app.py",
+                            "textRange": {
+                                "startLine": 49,
+                                "endLine": 49,
+                                "startOffset": 49,
+                                "endOffset": 59
+                            },
+                            "msg": "The malicious content is concatenated into the string"
+                        },
+                        {
+                            "component": "neelkanth-khithani_security-scanning-pipeline:app.py",
+                            "textRange": {
+                                "startLine": 46,
+                                "endLine": 46,
+                                "startOffset": 4,
+                                "endOffset": 46
+                            },
+                            "msg": "A malicious value can be assigned to variable ‘user_input’"
+                        },
+                        {
+                            "component": "neelkanth-khithani_security-scanning-pipeline:app.py",
+                            "textRange": {
+                                "startLine": 46,
+                                "endLine": 46,
+                                "startOffset": 17,
+                                "endOffset": 46
+                            },
+                            "msg": "Source: a user can craft an HTTP request with malicious content"
+                        }
+                    ]
+                }
+            ],
+            "status": "OPEN",
+            "message": "Change this code to not construct HTML content directly from user-controlled data.",
+            "effort": "30min",
+            "debt": "30min",
+            "author": "",
+            "tags": [
+                "cwe",
+                "python3"
+            ],
+            "creationDate": "2025-02-15T13:32:24+0100",
+            "updateDate": "2025-02-15T13:32:24+0100",
+            "type": "VULNERABILITY",
+            "organization": "security-scanning-pipeline",
+            "cleanCodeAttribute": "COMPLETE",
+            "cleanCodeAttributeCategory": "INTENTIONAL",
+            "impacts": [
+                {
+                    "softwareQuality": "SECURITY",
+                    "severity": "BLOCKER"
+                }
+            ],
+            "issueStatus": "OPEN",
+            "projectName": "Security Scanning Pipeline"
+        },
+        {
+            "key": "AZUJmPCs6LPeHtyON0_H",
+            "rule": "pythonsecurity:S5131",
+            "severity": "BLOCKER",
+            "component": "neelkanth-khithani_security-scanning-pipeline:app.py",
+            "project": "neelkanth-khithani_security-scanning-pipeline",
+            "line": 56,
+            "hash": "399af17f63896fb7979aa12131436a49",
+            "textRange": {
+                "startLine": 56,
+                "endLine": 56,
+                "startOffset": 4,
+                "endOffset": 26
+            },
+            "flows": [
+                {
+                    "locations": [
+                        {
+                            "component": "neelkanth-khithani_security-scanning-pipeline:app.py",
+                            "textRange": {
+                                "startLine": 56,
+                                "endLine": 56,
+                                "startOffset": 4,
+                                "endOffset": 26
+                            },
+                            "msg": "Sink: this invocation is not safe; a malicious value can be used as argument"
+                        },
+                        {
+                            "component": "neelkanth-khithani_security-scanning-pipeline:app.py",
+                            "textRange": {
+                                "startLine": 56,
+                                "endLine": 56,
+                                "startOffset": 11,
+                                "endOffset": 26
+                            },
+                            "msg": "This invocation can propagate malicious content to its return value"
+                        },
+                        {
+                            "component": "neelkanth-khithani_security-scanning-pipeline:app.py",
+                            "textRange": {
+                                "startLine": 56,
+                                "endLine": 56,
+                                "startOffset": 15,
+                                "endOffset": 25
+                            },
+                            "msg": "This invocation can propagate malicious content to its return value"
+                        },
+                        {
+                            "component": "neelkanth-khithani_security-scanning-pipeline:app.py",
+                            "textRange": {
+                                "startLine": 53,
+                                "endLine": 53,
+                                "startOffset": 4,
+                                "endOffset": 35
+                            },
+                            "msg": "A malicious value can be assigned to variable ‘code’"
+                        },
+                        {
+                            "component": "neelkanth-khithani_security-scanning-pipeline:app.py",
+                            "textRange": {
+                                "startLine": 53,
+                                "endLine": 53,
+                                "startOffset": 11,
+                                "endOffset": 35
+                            },
+                            "msg": "Source: a user can craft an HTTP request with malicious content"
+                        }
+                    ]
+                }
+            ],
+            "status": "OPEN",
+            "message": "Change this code to not reflect user-controlled data.",
+            "effort": "30min",
+            "debt": "30min",
+            "author": "",
+            "tags": [
+                "cwe"
+            ],
+            "creationDate": "2025-02-15T13:32:24+0100",
+            "updateDate": "2025-02-15T13:32:24+0100",
+            "type": "VULNERABILITY",
+            "organization": "security-scanning-pipeline",
+            "cleanCodeAttribute": "COMPLETE",
+            "cleanCodeAttributeCategory": "INTENTIONAL",
+            "impacts": [
+                {
+                    "softwareQuality": "SECURITY",
+                    "severity": "HIGH"
+                }
+            ],
+            "issueStatus": "OPEN",
+            "projectName": "Security Scanning Pipeline"
+        },
+        {
+            "key": "AZUJmPCs6LPeHtyON0_I",
+            "rule": "pythonsecurity:S5334",
+            "severity": "BLOCKER",
+            "component": "neelkanth-khithani_security-scanning-pipeline:app.py",
+            "project": "neelkanth-khithani_security-scanning-pipeline",
+            "line": 56,
+            "hash": "399af17f63896fb7979aa12131436a49",
+            "textRange": {
+                "startLine": 56,
+                "endLine": 56,
+                "startOffset": 15,
+                "endOffset": 25
+            },
+            "flows": [
+                {
+                    "locations": [
+                        {
+                            "component": "neelkanth-khithani_security-scanning-pipeline:app.py",
+                            "textRange": {
+                                "startLine": 56,
+                                "endLine": 56,
+                                "startOffset": 15,
+                                "endOffset": 25
+                            },
+                            "msg": "Sink: this invocation is not safe; a malicious value can be used as argument"
+                        },
+                        {
+                            "component": "neelkanth-khithani_security-scanning-pipeline:app.py",
+                            "textRange": {
+                                "startLine": 53,
+                                "endLine": 53,
+                                "startOffset": 4,
+                                "endOffset": 35
+                            },
+                            "msg": "A malicious value can be assigned to variable ‘code’"
+                        },
+                        {
+                            "component": "neelkanth-khithani_security-scanning-pipeline:app.py",
+                            "textRange": {
+                                "startLine": 53,
+                                "endLine": 53,
+                                "startOffset": 11,
+                                "endOffset": 35
+                            },
+                            "msg": "Source: a user can craft an HTTP request with malicious content"
+                        }
+                    ]
+                }
+            ],
+            "status": "OPEN",
+            "message": "Change this code to not dynamically execute code influenced by user-controlled data.",
+            "effort": "30min",
+            "debt": "30min",
+            "author": "",
+            "tags": [
+                "cwe"
+            ],
+            "creationDate": "2025-02-15T13:32:24+0100",
+            "updateDate": "2025-02-15T13:32:24+0100",
+            "type": "VULNERABILITY",
+            "organization": "security-scanning-pipeline",
+            "cleanCodeAttribute": "COMPLETE",
+            "cleanCodeAttributeCategory": "INTENTIONAL",
+            "impacts": [
+                {
+                    "softwareQuality": "SECURITY",
+                    "severity": "HIGH"
+                }
+            ],
+            "issueStatus": "OPEN",
+            "projectName": "Security Scanning Pipeline"
+        }
+    ],
+    "components": [
+        {
+            "organization": "security-scanning-pipeline",
+            "key": "neelkanth-khithani_security-scanning-pipeline",
+            "uuid": "AZUJQw9X57dOaoNoSgp9",
+            "enabled": true,
+            "qualifier": "TRK",
+            "name": "Security Scanning Pipeline",
+            "longName": "Security Scanning Pipeline"
+        },
+        {
+            "organization": "security-scanning-pipeline",
+            "key": "neelkanth-khithani_security-scanning-pipeline:app.py",
+            "uuid": "AZUJmO1n6LPeHtyON0_C",
+            "enabled": true,
+            "qualifier": "FIL",
+            "name": "app.py",
+            "longName": "app.py",
+            "path": "app.py"
+        }
+    ],
+    "organizations": [
+        {
+            "key": "security-scanning-pipeline",
+            "name": "neelkanth-khithani"
+        }
+    ],
+    "facets": []
+}

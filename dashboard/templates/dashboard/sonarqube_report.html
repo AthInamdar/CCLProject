@@ -1,0 +1,45 @@
+{% extends "dashboard/base.html" %}
+<!--fshfb-->
+{% block title %}SonarQube Report{% endblock %}
+<!--bdshj-->
+{% block content %}
+<h2>SonarQube Security Report</h2>
+{% if data.error %}
+<p style="color: red">{{ data.error }}</p>
+{% else %}
+<table
+  border="1"
+  cellpadding="5"
+  cellspacing="0"
+  style="width: 100%; border-collapse: collapse"
+>
+  <thead>
+    <tr style="background-color: #f2f2f2">
+      <th>Rule</th>
+      <th>Severity</th>
+      <th>Component</th>
+      <th>Status</th>
+      <th>Message</th>
+      <th>Effort</th>
+      <th>Close Date</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for issue in data.issues %}
+    <tr>
+      <td>{{ issue.rule }}</td>
+      <td>{{ issue.severity }}</td>
+      <td>{{ issue.component }}</td>
+      <td>{{ issue.status }}</td>
+      <td>{{ issue.message }}</td>
+      <td>{{ issue.effort }}</td>
+      <td>{{ issue.closeDate|default:"N/A" }}</td>
+    </tr>
+    {% empty %}
+    <tr>
+      <td colspan="7" style="text-align: center">No issues found.</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endif %} {% endblock %}
