@@ -8,7 +8,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 # Initialize chatbot with API key from settings
-chatbot = GeminiChatbot(api_key="AIzaSyCcknPR_lmjNLeLXTuGk_0BcInewKyJDIc")
+chatbot = GeminiChatbot(api_key="********************************")
 
 @csrf_exempt
 def chatbot_view(request):
