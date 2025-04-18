@@ -13,6 +13,7 @@
 }
 
 /* Chatbot section - fixed to the right */
+/* Chatbot section - fixed to the right */
 .chatbot-section {
     position: fixed;
     top: 0;
@@ -25,7 +26,17 @@
     justify-content: center;
     align-items: center;
     padding: 10px;
-    overflow-y: auto;
+    overflow: hidden;
+    /* 💡 No scrollbars */
+}
+
+/* Chatbot body - message area */
+#chatbot-body {
+    flex-grow: 1;
+    padding: 10px;
+    background-color: #e9ecef;
+    overflow: hidden;
+    /* 💡 Remove scrollbar */
 }
 
 /* Chatbot container styling */
@@ -87,4 +98,41 @@
 
 #chatbot-send:hover {
     background-color: #0056b3;
+}
+
+/* Common message styling */
+.message {
+    margin: 10px 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.message-content {
+    padding: 10px 15px;
+    border-radius: 8px;
+    max-width: 80%;
+    word-wrap: break-word;
+    font-family: sans-serif;
+}
+
+/* User message in red */
+.message.user .message-content {
+    align-self: flex-end;
+    background-color: #ffe6e6;
+    color: #b30000;
+    border: 1px solid #ff4d4d;
+}
+
+/* Bot message in black */
+.message.bot .message-content {
+    align-self: flex-start;
+    background-color: #f0f0f0;
+    color: #000000;
+    border: 1px solid #ccc;
+}
+
+/* Typing indicator */
+.message.bot.typing .message-content {
+    font-style: italic;
+    color: #888;
 }

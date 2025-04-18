@@ -281,7 +281,7 @@ class GeminiChatbot:
         try:
             genai.configure(api_key=api_key)
             # Use the most widely available model
-            self.model = genai.GenerativeModel("gemini-pro")
+            self.model = genai.GenerativeModel("gemini-2.0-flash")
             self.ready = True
         except Exception as e:
             logger.error(f"Gemini initialization failed: {str(e)}")

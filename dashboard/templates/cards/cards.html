@@ -1,0 +1,432 @@
+{% extends "dashboard/base.html" %} {% load static %} {% block content %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Sonarqube Report</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f5f7fa;
+        color: #333;
+        margin: 0;
+        padding: 20px;
+      }
+
+      h1 {
+        font-size: 2rem;
+        color: #24292e;
+        margin-bottom: 20px;
+      }
+
+      .card-container {
+        max-width: 900px;
+        margin: 0 auto 30px;
+        border: 1px solid #e1e4e8;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        background-color: white;
+      }
+
+      .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 20px;
+        background-color: #f8f9fa;
+        border-bottom: 1px solid #e1e4e8;
+        border-radius: 8px 8px 0 0;
+      }
+
+      .card-title {
+        font-weight: 600;
+        font-size: 1.2rem;
+        color: #24292e;
+      }
+
+      .severity-badge {
+        padding: 5px 12px;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 600;
+      }
+
+      .card-body {
+        padding: 20px;
+      }
+
+      .info-section {
+        margin-bottom: 20px;
+      }
+
+      .section-title {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px;
+        background-color: #f6f8fa;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-bottom: 10px;
+      }
+
+      .section-title h3 {
+        margin: 0;
+        font-size: 1rem;
+        color: #0366d6;
+      }
+
+      .section-content {
+        padding: 10px;
+        display: none;
+      }
+
+      .section-content.expanded {
+        display: block;
+      }
+
+      .info-grid {
+        display: grid;
+        grid-template-columns: 150px 1fr;
+        gap: 10px;
+        margin-bottom: 10px;
+      }
+
+      .info-label {
+        font-weight: 600;
+        color: #586069;
+      }
+
+      .info-value {
+        color: #24292e;
+        word-break: break-word;
+      }
+
+      .tag {
+        display: inline-block;
+        background-color: #e1f5fe;
+        color: #0288d1;
+        padding: 3px 8px;
+        border-radius: 4px;
+        font-size: 0.75rem;
+        margin-right: 5px;
+        margin-bottom: 5px;
+      }
+
+      .flow-container {
+        margin-top: 15px;
+      }
+
+      .flow-path {
+        margin-bottom: 15px;
+        padding-left: 15px;
+        border-left: 2px solid #e1e4e8;
+      }
+
+      .flow-location {
+        background-color: #f6f8fa;
+        padding: 10px;
+        border-radius: 5px;
+        margin-bottom: 10px;
+      }
+
+      .flow-message {
+        font-size: 0.9rem;
+        color: #586069;
+        margin: 5px 0;
+      }
+
+      .flow-range {
+        font-family: monospace;
+        font-size: 0.8rem;
+        color: #6a737d;
+        background-color: #f6f8fa;
+        padding: 2px 5px;
+        border-radius: 3px;
+      }
+
+      .nav-buttons {
+        display: flex;
+        justify-content: space-between;
+        padding: 15px 20px;
+        border-top: 1px solid #e1e4e8;
+        background-color: #f8f9fa;
+        border-radius: 0 0 8px 8px;
+      }
+
+      .nav-button {
+        background-color: #0366d6;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        padding: 8px 15px;
+        cursor: pointer;
+        font-size: 0.9rem;
+        width: 48%;
+      }
+
+      .nav-button:hover {
+        background-color: #0356b6;
+      }
+
+      .nav-button:disabled {
+        background-color: #e1e4e8;
+        cursor: not-allowed;
+      }
+
+      .card-footer {
+        text-align: center;
+        padding-top: 10px;
+        color: #6a737d;
+        font-size: 0.85rem;
+      }
+
+      @media (max-width: 768px) {
+        .info-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .info-label {
+          margin-bottom: 5px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Sonarqube Report</h1>
+
+    <div class="card-container">
+      <div class="card-header">
+        <div class="card-title">Issue Details</div>
+        <div class="severity-badge" id="severity-badge">Severity</div>
+      </div>
+
+      <div class="card-body">
+        <div class="info-section">
+          <div class="section-title" onclick="toggleSection('basic-info')">
+            <h3>Basic Information</h3>
+            <i class="fas fa-chevron-down" id="basic-info-icon"></i>
+          </div>
+          <div class="section-content" id="basic-info">
+            <div class="info-grid">
+              <div class="info-label">Component:</div>
+              <div class="info-value" id="component-value"></div>
+
+              <div class="info-label">Project:</div>
+              <div class="info-value" id="project-value"></div>
+
+              <div class="info-label">Line:</div>
+              <div class="info-value" id="line-value"></div>
+
+              <div class="info-label">Text Range:</div>
+              <div class="info-value" id="textRange-value"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="info-section">
+          <div class="section-title" onclick="toggleSection('message-info')">
+            <h3>Message</h3>
+            <i class="fas fa-chevron-down" id="message-info-icon"></i>
+          </div>
+          <div class="section-content" id="message-info">
+            <div id="message-value"></div>
+          </div>
+        </div>
+
+        <div class="info-section">
+          <div class="section-title" onclick="toggleSection('flows-info')">
+            <h3>Flows</h3>
+            <i class="fas fa-chevron-down" id="flows-info-icon"></i>
+          </div>
+          <div class="section-content" id="flows-info">
+            <div id="flows-value"></div>
+          </div>
+        </div>
+
+        <div class="info-section">
+          <div class="section-title" onclick="toggleSection('technical-info')">
+            <h3>Technical Details</h3>
+            <i class="fas fa-chevron-down" id="technical-info-icon"></i>
+          </div>
+          <div class="section-content" id="technical-info">
+            <div class="info-grid">
+              <div class="info-label">Effort:</div>
+              <div class="info-value" id="effort-value"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="info-section">
+          <div class="section-title" onclick="toggleSection('tags-info')">
+            <h3>Tags</h3>
+            <i class="fas fa-chevron-down" id="tags-info-icon"></i>
+          </div>
+          <div class="section-content" id="tags-info">
+            <div id="tags-value"></div>
+          </div>
+        </div>
+
+        <div class="card-footer" id="card-footer">Card 1 of 1</div>
+      </div>
+
+      <div class="nav-buttons">
+        <button
+          class="nav-button"
+          onclick="showCard(currentIndex - 1)"
+          id="prev-btn"
+        >
+          <i class="fas fa-chevron-left"></i> Previous
+        </button>
+        <button
+          class="nav-button"
+          onclick="showCard(currentIndex + 1)"
+          id="next-btn"
+        >
+          Next <i class="fas fa-chevron-right"></i>
+        </button>
+      </div>
+    </div>
+
+    <script>
+      const cards = {{ cards|safe }};
+      let currentIndex = 0;
+
+      function toggleSection(sectionId) {
+        const content = document.getElementById(sectionId);
+        const icon = document.getElementById(`${sectionId}-icon`);
+        content.classList.toggle('expanded');
+        icon.classList.toggle('fa-chevron-down');
+        icon.classList.toggle('fa-chevron-up');
+      }
+
+      function formatTextRange(textRange) {
+        if (!textRange) return 'N/A';
+        if (typeof textRange === 'string') {
+          try {
+            textRange = JSON.parse(textRange);
+          } catch (e) {
+            return textRange;
+          }
+        }
+        return `Start Line: ${textRange.startLine || 'N/A'}, End Line: ${textRange.endLine || 'N/A'},
+                Start Offset: ${textRange.startOffset || 'N/A'}, End Offset: ${textRange.endOffset || 'N/A'}`;
+      }
+
+      function formatFlows(flows) {
+        if (!flows) return '<div>No flow data available</div>';
+
+        try {
+          const parsedFlows = typeof flows === 'string' ? JSON.parse(flows) : flows;
+          let html = '';
+
+          parsedFlows.forEach((flow, flowIndex) => {
+            html += `<div class="flow-container">`;
+            html += `<h4>Flow Path ${flowIndex + 1}</h4>`;
+
+            if (flow.locations && flow.locations.length > 0) {
+              flow.locations.forEach((location, locIndex) => {
+                const textRange = location.textRange ?
+                  `Line ${location.textRange.startLine || 'N/A'}:${location.textRange.startOffset || 'N/A'}-${location.textRange.endOffset || 'N/A'}` :
+                  'N/A';
+
+                html += `
+                  <div class="flow-path">
+                    <div class="flow-location">
+                      <div><strong>Component:</strong> ${location.component || 'Unknown'}</div>
+                      <div class="flow-message"><strong>Message:</strong> ${location.msg || 'No message'}</div>
+                      <div class="flow-range"><strong>Range:</strong> ${textRange}</div>
+                    </div>
+                  </div>
+                `;
+              });
+            } else {
+              html += '<div>No location data available for this flow</div>';
+            }
+
+            html += `</div>`;
+          });
+
+          return html;
+        } catch (e) {
+          console.error('Error parsing flows:', e);
+          return '<div>Error displaying flow data</div>';
+        }
+      }
+
+      function showCard(index) {
+        if (index < 0 || index >= cards.length) return;
+
+        currentIndex = index;
+        const card = cards[index];
+
+        // Set severity badge
+        const severityBadge = document.getElementById('severity-badge');
+        severityBadge.textContent = card.severity || 'UNKNOWN';
+
+        // Set badge color based on severity
+        const severity = card.severity ? card.severity.toLowerCase() : '';
+        switch(severity) {
+          case 'blocker':
+          case 'critical':
+            severityBadge.style.backgroundColor = '#d73a4a';
+            severityBadge.style.color = 'white';
+            break;
+          case 'major':
+          case 'high':
+            severityBadge.style.backgroundColor = '#f9826c';
+            severityBadge.style.color = 'white';
+            break;
+          case 'medium':
+            severityBadge.style.backgroundColor = '#ffd33d';
+            severityBadge.style.color = '#24292e';
+            break;
+          case 'minor':
+          case 'low':
+            severityBadge.style.backgroundColor = '#28a745';
+            severityBadge.style.color = 'white';
+            break;
+          default:
+            severityBadge.style.backgroundColor = '#e1e4e8';
+            severityBadge.style.color = '#24292e';
+        }
+
+        // Set basic info
+        document.getElementById('component-value').textContent = card.component || 'N/A';
+        document.getElementById('project-value').textContent = card.project || 'N/A';
+        document.getElementById('line-value').textContent = card.line || 'N/A';
+        document.getElementById('textRange-value').textContent = formatTextRange(card.textRange);
+
+        // Set message
+        document.getElementById('message-value').textContent = card.message || 'No message available';
+
+        // Set flows
+        document.getElementById('flows-value').innerHTML = formatFlows(card.flows);
+
+        // Set technical info
+        document.getElementById('effort-value').textContent = card.effort || 'N/A';
+
+        // Set tags
+        const tagsHtml = card.tags && card.tags.length ?
+          card.tags.map(tag => `<span class="tag">${tag}</span>`).join('') :
+          'No tags available';
+        document.getElementById('tags-value').innerHTML = tagsHtml;
+
+        // Update footer
+        document.getElementById('card-footer').textContent = `Card ${index + 1} of ${cards.length}`;
+
+        // Update nav buttons
+        document.getElementById('prev-btn').disabled = index === 0;
+        document.getElementById('next-btn').disabled = index === cards.length - 1;
+      }
+
+      // Initialize first card
+      showCard(currentIndex);
+    </script>
+  </body>
+</html>
+{% endblock %}

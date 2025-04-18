@@ -2,7 +2,6 @@ document.addEventListener("DOMContentLoaded", function () {
   const chatbotBody = document.getElementById("chatbot-body");
   const chatbotInput = document.getElementById("chatbot-input");
   const chatbotSend = document.getElementById("chatbot-send");
-  let conversationHistory = [];
 
   // Initial greeting
   addBotMessage(
@@ -21,6 +20,8 @@ document.addEventListener("DOMContentLoaded", function () {
     addUserMessage(message);
     chatbotInput.value = "";
 
+    showTypingIndicator();
+
     fetch("/chatbot/", {
       method: "POST",
       headers: {
@@ -30,13 +31,11 @@ document.addEventListener("DOMContentLoaded", function () {
       body: JSON.stringify({ message: message }),
     })
       .then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
+        if (!response.ok) throw new Error("Network response was not ok");
         return response.json();
       })
       .then((data) => {
-        console.log("Full response:", data); // Log full response
+        hideTypingIndicator();
         if (data.error) {
           addBotMessage("Error: " + data.error);
         } else {
@@ -44,6 +43,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
       })
       .catch((error) => {
+        hideTypingIndicator();
         console.error("Error:", error);
         addBotMessage("Sorry, there was an error processing your request.");
       });
@@ -60,26 +60,63 @@ document.addEventListener("DOMContentLoaded", function () {
   function addMessage(sender, message) {
     const messageDiv = document.createElement("div");
     messageDiv.className = `message ${sender}`;
-    messageDiv.innerHTML = `<div class="message-content">${message}</div>`;
+
+    const messageContent = document.createElement("div");
+    messageContent.className = "message-content";
+
+    // Apply Markdown parsing only for bot messages
+    if (sender === "bot") {
+      messageContent.innerHTML = marked.parse(message); // Markdown to HTML
+      messageContent.style.color = "black"; // bot = black
+    } else {
+      messageContent.textContent = message;
+      messageContent.style.color = "red"; // user = red
+    }
+
+    messageDiv.appendChild(messageContent);
     chatbotBody.appendChild(messageDiv);
     chatbotBody.scrollTop = chatbotBody.scrollHeight;
   }
 
+  // Typing indicator with animated dots
+  let typingInterval;
   function showTypingIndicator() {
     const typingDiv = document.createElement("div");
     typingDiv.id = "typing-indicator";
     typingDiv.className = "message bot typing";
-    typingDiv.innerHTML = '<div class="message-content">Typing...</div>';
+    const messageContent = document.createElement("div");
+    messageContent.className = "message-content";
+    messageContent.textContent = "Thinking";
+    messageContent.style.color = "black";
+    typingDiv.appendChild(messageContent);
     chatbotBody.appendChild(typingDiv);
     chatbotBody.scrollTop = chatbotBody.scrollHeight;
+
+    let dotCount = 0;
+    typingInterval = setInterval(() => {
+      dotCount = (dotCount + 1) % 4;
+      messageContent.textContent = "Thinking" + ".".repeat(dotCount);
+    }, 500);
   }
 
   function hideTypingIndicator() {
+    clearInterval(typingInterval);
     const typingDiv = document.getElementById("typing-indicator");
     if (typingDiv) typingDiv.remove();
   }
 
   function getCookie(name) {
-    // ... existing getCookie implementation ...
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== "") {
+      const cookies = document.cookie.split(";");
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        if (cookie.substring(0, name.length + 1) === name + "=") {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
+        }
+      }
+    }
+    return cookieValue;
   }
 });
